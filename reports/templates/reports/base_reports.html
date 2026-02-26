@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-md-3">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <div class="sidebar">
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+
+            <!-- Dashboard -->
+            <li class="nav-item">
+              <a href="{% url 'reports_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_dashboard' %}active{% endif %}">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+
+            <!-- Data Collection Reports -->
+            <li class="nav-item">
+              <a href="{% url 'reports_datacollection' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_datacollection' %}active{% endif %}">
+                <i class="nav-icon fas fa-database"></i>
+                <p>Data Collection</p>
+              </a>
+            </li>
+
+            <!-- Violence Reports -->
+            <li class="nav-item">
+              <a href="{% url 'violence_reports' %}" class="nav-link {% if request.resolver_match.url_name == 'violence_reports' %}active{% endif %}">
+                <i class="nav-icon fas fa-exclamation-triangle"></i>
+                <p>Violence Reports</p>
+              </a>
+            </li>
+
+            <!-- Indicator Reports -->
+            <li class="nav-item">
+              <a href="{% url 'reports_indicators' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_indicators' %}active{% endif %}">
+                <i class="nav-icon fas fa-chart-line"></i>
+                <p>Indicators</p>
+              </a>
+            </li>
+
+            <!-- Visualization Reports -->
+            <li class="nav-item">
+              <a href="{% url 'reports_visualization' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_visualization' %}active{% endif %}">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>Visualization</p>
+              </a>
+            </li>
+
+            <!-- Analysis Reports -->
+            <li class="nav-item">
+              <a href="{% url 'reports_analysis' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_analysis' %}active{% endif %}">
+                <i class="nav-icon fas fa-search"></i>
+                <p>Analysis</p>
+              </a>
+            </li>
+
+            <!-- Policy Insights -->
+            <li class="nav-item">
+              <a href="{% url 'reports_policy' %}" class="nav-link {% if request.resolver_match.url_name == 'reports_policy' %}active{% endif %}">
+                <i class="nav-icon fas fa-balance-scale"></i>
+                <p>Policy Insights</p>
+              </a>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Main Report Content -->
+  <div class="col-md-9">
+    {% block reports_content %}
+    <!-- Each report view will inject its content here -->
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

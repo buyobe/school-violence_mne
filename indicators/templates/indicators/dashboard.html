@@ -1,0 +1,111 @@
+{% extends "indicators/base_indicators.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Indicators Dashboard</h2>
+
+  <!-- Add Indicator Form -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">Add New Indicator</div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Add Indicator</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Indicators Table -->
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Target</th>
+        <th>Actual</th>
+        <th>Description</th>
+        <th>Progress</th>
+        <th>Proof Document</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for indicator in indicators %}
+      <tr>
+        <td>{{ indicator.name }}</td>
+        <td>{{ indicator.get_indicator_type_display }}</td>
+        <td>{{ indicator.target_value }}</td>
+        <td>{{ indicator.actual_value }}</td>
+        <td>{{ indicator.description }}</td>
+        <td style="width:200px;">
+          <div class="progress">
+            <div class="progress-bar {% if indicator.progress_percentage >= 100 %}bg-success{% else %}bg-info{% endif %}" 
+                 role="progressbar" 
+                 style="width: {{ indicator.progress_percentage }}%;" 
+                 aria-valuenow="{{ indicator.progress_percentage }}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+              {{ indicator.progress_percentage }}%
+            </div>
+          </div>
+        </td>
+        <td>
+          {% if indicator.proof_document %}
+            <!-- Preview Button -->
+            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal{{ indicator.pk }}">
+              Preview
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="previewModal{{ indicator.pk }}" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel{{ indicator.pk }}" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel{{ indicator.pk }}">Proof Preview - {{ indicator.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-center">
+                    {% with indicator.proof_document.url|lower as file_url %}
+                      {% if ".jpg" in file_url or ".jpeg" in file_url or ".png" in file_url or ".gif" in file_url %}
+                        <img src="{{ indicator.proof_document.url }}" alt="Proof" class="img-fluid">
+                      {% elif ".pdf" in file_url %}
+                        <object data="{{ indicator.proof_document.url }}" type="application/pdf" width="100%" height="600px">
+                          <p>
+                            PDF preview not supported in your browser.
+                            <a href="{{ indicator.proof_document.url }}" target="_blank" class="btn btn-primary">
+                              Open / Download PDF
+                            </a>
+                          </p>
+                        </object>
+                      {% else %}
+                        <a href="{{ indicator.proof_document.url }}" target="_blank" class="btn btn-secondary">
+                          Download Proof
+                        </a>
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                  <div class="modal-footer">
+                    <a href="{{ indicator.proof_document.url }}" class="btn btn-primary" download>
+                      Download Proof
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            No document
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'edit_indicator' indicator.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'delete_indicator' indicator.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

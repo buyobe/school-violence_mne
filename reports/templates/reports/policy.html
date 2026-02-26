@@ -1,0 +1,47 @@
+{% extends "reports/base_reports.html" %}
+{% load static %}
+{% block reports_content %}
+
+<div class="text-center mb-4">
+  <img src="{% static ngo_logo %}" alt="{{ ngo_name }} Logo" style="height:100px;">
+  <h2>{{ title }}</h2>
+  <h4>{{ ngo_name }}</h4>
+</div>
+
+<div class="text-end mb-3">
+  <a href="{% url 'reports_policy_pdf' %}" class="btn btn-danger">
+    Download PDF <i class="bi bi-file-earmark-pdf"></i>
+  </a>
+</div>
+
+<h3>Executive Summary</h3>
+<p>{{ executive_summary }}</p>
+
+<h3>Evidence–Policy–Action Table</h3>
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>Findings (from student data)</th>
+      <th>Policy Gaps</th>
+      <th>Recommendations</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in policy_table %}
+    <tr>
+      <td>{{ row.finding }}</td>
+      <td>{{ row.gap }}</td>
+      <td>{{ row.recommendation }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Conclusion</h3>
+<p>
+Mitigating school violence requires urgent, coordinated action. By implementing these recommendations,
+<strong>{{ ngo_name }}</strong> calls on government, NGOs, schools, and communities to collaborate in protecting students,
+upholding children’s rights, and ensuring safe learning environments for all.
+</p>
+
+{% endblock %}

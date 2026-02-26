@@ -1,0 +1,11 @@
+{% extends "settings/settings_base.html" %}
+
+{% block settings_content %}
+<h3>{% if user %}Edit User: {{ user.username }}{% else %}Add User{% endif %}</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Save</button>
+  <a href="{% url 'settings:user_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

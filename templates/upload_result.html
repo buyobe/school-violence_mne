@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Import Summary</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% else %}
+        <ul>
+            <li>Students → Imported: {{ summary.students.imported }}, Skipped: {{ summary.students.skipped }}</li>
+            <li>Teachers → Imported: {{ summary.teachers.imported }}, Skipped: {{ summary.teachers.skipped }}</li>
+            <li>Parents → Imported: {{ summary.parents.imported }}, Skipped: {{ summary.parents.skipped }}</li>
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

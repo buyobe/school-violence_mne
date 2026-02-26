@@ -1,0 +1,180 @@
+{% extends "reports/base_reports.html" %}
+{% block reports_content %}
+<h2>Visualization Reports</h2>
+<p>Charts and graphs for easier interpretation of school violence data.</p>
+
+<!-- Violence Type Distribution -->
+<div class="card mb-4">
+  <div class="card-header">Violence Type Distribution</div>
+  <div class="card-body">
+    <canvas id="violenceTypeChart"></canvas>
+  </div>
+</div>
+
+<!-- Perpetrator Analysis -->
+<div class="card mb-4">
+  <div class="card-header">Perpetrator Analysis</div>
+  <div class="card-body">
+    <canvas id="perpetratorChart"></canvas>
+  </div>
+</div>
+
+<!-- Regional Hotspots -->
+<div class="card mb-4">
+  <div class="card-header">Regional Hotspots</div>
+  <div class="card-body">
+    <canvas id="regionalHotspotChart"></canvas>
+  </div>
+</div>
+
+<!-- Violence Gender Distribution -->
+<div class="card mb-4">
+  <div class="card-header">Violence Gender Distribution</div>
+  <div class="card-body">
+    <canvas id="genderDistributionChart"></canvas>
+  </div>
+</div>
+
+<!-- Violence Type by Gender -->
+<div class="card mb-4">
+  <div class="card-header">Violence Type by Gender</div>
+  <div class="card-body">
+    <canvas id="violenceGenderChart"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Violence Type Chart
+  const violenceLabels = {{ violence_labels|safe }};
+  const violenceCounts = {{ violence_counts|safe }};
+  new Chart(document.getElementById('violenceTypeChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: violenceLabels,
+      datasets: [{
+        label: 'Number of Cases',
+        data: violenceCounts,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Distribution of Violence Types in Schools (Tanzania)' } },
+      scales: {
+        x: { title: { display: true, text: 'Forms of Violence' } },
+        y: { title: { display: true, text: 'Number of Reported Cases' }, beginAtZero: true }
+      }
+    }
+  });
+
+  // Perpetrator Chart
+  const perpetratorLabels = {{ perpetrator_labels|safe }};
+  const perpetratorCounts = {{ perpetrator_counts|safe }};
+  new Chart(document.getElementById('perpetratorChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: perpetratorLabels,
+      datasets: [{
+        label: 'Perpetrators',
+        data: perpetratorCounts,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)'
+        ]
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Perpetrator Analysis of School Violence' }, legend: { position: 'right' } }
+    }
+  });
+
+  // Regional Hotspot Chart
+  const regionalLabels = {{ regional_labels|safe }};
+  const regionalCounts = {{ regional_counts|safe }};
+  new Chart(document.getElementById('regionalHotspotChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: regionalLabels,
+      datasets: [{
+        label: 'Cases per Region',
+        data: regionalCounts,
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Regional Hotspots of School Violence' } },
+      scales: {
+        x: { title: { display: true, text: 'Regions' } },
+        y: { title: { display: true, text: 'Number of Cases' }, beginAtZero: true }
+      }
+    }
+  });
+
+  // Gender Distribution Chart
+  const genderLabels = {{ gender_labels|safe }};
+  const genderCounts = {{ gender_counts|safe }};
+  new Chart(document.getElementById('genderDistributionChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: genderLabels,
+      datasets: [{
+        label: 'Cases by Gender',
+        data: genderCounts,
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.6)',   // Male
+          'rgba(255, 99, 132, 0.6)',   // Female
+          'rgba(255, 206, 86, 0.6)'    // Unknown/Other
+        ]
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Gender Distribution of Reported Violence Cases' }, legend: { position: 'bottom' } }
+    }
+  });
+
+  // Violence Type by Gender Chart
+  const violenceGenderLabels = {{ violence_gender_labels|safe }};
+  const maleCounts = {{ male_counts|safe }};
+  const femaleCounts = {{ female_counts|safe }};
+  const unknownCounts = {{ unknown_counts|safe }};
+  new Chart(document.getElementById('violenceGenderChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: violenceGenderLabels,
+      datasets: [
+        {
+          label: 'Male Victims',
+          data: maleCounts,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        },
+        {
+          label: 'Female Victims',
+          data: femaleCounts,
+          backgroundColor: 'rgba(255, 99, 132, 0.6)'
+        },
+        {
+          label: 'Unknown/Other',
+          data: unknownCounts,
+          backgroundColor: 'rgba(255, 206, 86, 0.6)'
+        }
+      ]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Violence Type by Gender' } },
+      responsive: true,
+      scales: {
+        x: { title: { display: true, text: 'Forms of Violence' } },
+        y: { beginAtZero: true, title: { display: true, text: 'Number of Cases' } }
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "reports/base_reports.html" %}
+{% block reports_content %}
+<h2>{{ title }}</h2>
+
+<h3>Students</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID Number</th><th>Region</th><th>District</th><th>School</th>
+      <th>Gender</th><th>Age Group</th><th>Disability</th>
+      <th>Knowledge on Violence</th><th>Experienced VAC</th>
+      <th>Forms of Violence</th><th>Perpetrators</th><th>Vulnerable Places</th>
+      <th>Reporting Violence</th><th>Effectiveness of Reporting System</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in students %}
+    <tr>
+      <td>{{ s.id_number }}</td>
+      <td>{{ s.region }}</td>
+      <td>{{ s.district }}</td>
+      <td>{{ s.school }}</td>
+      <td>{{ s.gender }}</td>
+      <td>{{ s.age_group }}</td>
+      <td>{% if s.disability_status %}Yes{% else %}No{% endif %}</td>
+      <td>{% if s.knowledge_on_violence %}Yes{% else %}No{% endif %}</td>
+      <td>{% if s.experienced_vac %}Yes{% else %}No{% endif %}</td>
+      <td>{{ s.forms_of_violence }}</td>
+      <td>{{ s.perpetrators }}</td>
+      <td>{{ s.vulnerable_places }}</td>
+      <td>{% if s.reporting_violence %}Yes{% else %}No{% endif %}</td>
+      <td>{{ s.effectiveness_reporting_system }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="14">No student records found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Teachers</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID Number</th><th>Region</th><th>District</th><th>School</th>
+      <th>Gender</th><th>Age Group</th><th>Marital Status</th>
+      <th>Education Level</th><th>Forms of Violence</th>
+      <th>Reporting Violence</th><th>Vulnerable Places</th>
+      <th>Right to Discipline Child</th><th>Effective Handling VAC</th>
+      <th>Training Received</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in teachers %}
+    <tr>
+      <td>{{ t.id_number }}</td>
+      <td>{{ t.region }}</td>
+      <td>{{ t.district }}</td>
+      <td>{{ t.school }}</td>
+      <td>{{ t.gender }}</td>
+      <td>{{ t.age_group }}</td>
+      <td>{{ t.marital_status }}</td>
+      <td>{{ t.education_level }}</td>
+      <td>{{ t.forms_of_violence }}</td>
+      <td>{% if t.reporting_violence %}Yes{% else %}No{% endif %}</td>
+      <td>{{ t.vulnerable_places }}</td>
+      <td>{% if t.right_to_discipline_child %}Yes{% else %}No{% endif %}</td>
+      <td>{{ t.effective_handling_vac }}</td>
+      <td>{{ t.training_received }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="15">No teacher records found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Parents</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID Number</th><th>Region</th><th>District</th><th>School</th>
+      <th>Gender</th><th>Age Group</th><th>Marital Status</th>
+      <th>Education Level</th><th>Forms of Violence</th>
+      <th>Reporting Violence</th><th>Vulnerable Places</th>
+      <th>Employment</th><th>Physical Punishment</th>
+      <th>Believe in Child Punishment</th><th>Effectiveness Positive Punishment</th>
+      <th>Child Comforting</th><th>Impose Rules to Child</th><th>Set Rules with Child</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in parents %}
+    <tr>
+      <td>{{ p.id_number }}</td>
+      <td>{{ p.region }}</td>
+      <td>{{ p.district }}</td>
+      <td>{{ p.school }}</td>
+      <td>{{ p.gender }}</td>
+      <td>{{ p.age_group }}</td>
+      <td>{{ p.marital_status }}</td>
+      <td>{{ p.education_level }}</td>
+      <td>{{ p.forms_of_violence }}</td>
+      <td>{% if p.reporting_violence %}Yes{% else %}No{% endif %}</td>
+      <td>{{ p.vulnerable_places }}</td>
+      <td>{{ p.employment }}</td>
+      <td>{% if p.physical_punishment %}Yes{% else %}No{% endif %}</td>
+      <td>{% if p.believe_in_child_punishment %}Yes{% else %}No{% endif %}</td>
+      <td>{{ p.effectiveness_positive_punishment }}</td>
+      <td>{% if p.child_comforting %}Yes{% else %}No{% endif %}</td>
+      <td>{% if p.impose_rules_to_child %}Yes{% else %}No{% endif %}</td>
+      <td>{% if p.set_rules_with_child %}Yes{% else %}No{% endif %}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="18">No parent records found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+<div class="mt-3">
+  <a href="{% url 'export_datacollection_excel' %}" class="btn btn-success">
+    <i class="fas fa-file-excel"></i> Download Excel
+  </a>
+</div>
+{% endblock %}

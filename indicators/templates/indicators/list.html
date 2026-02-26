@@ -1,0 +1,27 @@
+{% extends "indicators/base_indicators.html" %}
+
+{% block indicators_content %}
+<h2>Indicators List</h2>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Target</th>
+      <th>Actual</th>
+      <th>Progress (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for indicator in indicators %}
+    <tr>
+      <td>{{ indicator.name }}</td>
+      <td>{{ indicator.get_indicator_type_display }}</td>
+      <td>{{ indicator.target_value }}</td>
+      <td>{{ indicator.actual_value }}</td>
+      <td>{{ indicator.progress }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

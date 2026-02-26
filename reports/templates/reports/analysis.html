@@ -1,0 +1,105 @@
+{% extends "reports/base_reports.html" %}
+{% block reports_content %}
+
+<h2>Analysis Report</h2>
+
+<div class="row">
+  <!-- Gender -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">Violence by Gender</div>
+      <div class="card-body">
+        <p>Our data shows clear gender disparities in experiences of violence. This highlights the need for gender‑responsive interventions.</p>
+        <ul>
+          {% for gender, count in effects_by_gender.items %}
+            <li>{{ gender }}: {{ count }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Age -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-success text-white">Violence by Age</div>
+      <div class="card-body">
+        <p>Younger students are disproportionately exposed to violence, showing vulnerability that requires targeted protection.</p>
+        <ul>
+          {% for age, count in effects_by_age.items %}
+            <li>{{ age }}: {{ count }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Perpetrator -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-danger text-white">Violence by Perpetrator</div>
+      <div class="card-body">
+        <p>Teachers, parents, and peers are all identified as perpetrators. This underscores accountability gaps within schools and communities.</p>
+        <ul>
+          {% for perp, count in effects_by_perpetrator.items %}
+            <li>{{ perp }}: {{ count }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Place -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-warning text-dark">Violence by Place</div>
+      <div class="card-body">
+        <p>Certain environments, such as classrooms and playgrounds, are consistently reported as unsafe. This calls for safety audits and redesigns.</p>
+        <ul>
+          {% for place, count in effects_by_place.items %}
+            <li>{{ place }}: {{ count }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Reporting Effectiveness -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-info text-white">Reporting Effectiveness</div>
+      <div class="card-body">
+        <p>Students often lack trust in reporting systems, limiting accountability. Strengthening confidential channels is critical.</p>
+        <ul>
+          {% for status, count in reporting_effectiveness.items %}
+            <li>{{ status }}: {{ count }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disability -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow">
+      <div class="card-header bg-secondary text-white">Impact on Students with Disabilities</div>
+      <div class="card-body">
+        <p>Violence has unique impacts on students with disabilities, often compounding stress and fear.</p>
+        <p>Total affected: {{ effects_by_disability.total }}</p>
+        {% if effects_by_disability.breakdown %}
+          <ul>
+            {% for effect, count in effects_by_disability.breakdown.items %}
+              <li>{{ effect }}: {{ count }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

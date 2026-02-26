@@ -1,0 +1,76 @@
+{% extends "visualization/base_visualization.html" %}
+
+{% block visualization_content %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Violence Reporting Trends</h3>
+    <p class="card-subtitle">Comparison of Students, Teachers, and Parents by {{ selected_category|title }}</p>
+  </div>
+  <div class="card-body">
+    <form method="get" class="mb-3">
+      <label for="category">Select Category:</label>
+      <select name="category" id="category" class="form-control w-25 d-inline" onchange="this.form.submit()">
+        <option value="region" {% if selected_category == "region" %}selected{% endif %}>Region</option>
+        <option value="district" {% if selected_category == "district" %}selected{% endif %}>District</option>
+        <option value="school" {% if selected_category == "school" %}selected{% endif %}>School</option>
+        <option value="gender" {% if selected_category == "gender" %}selected{% endif %}>Gender</option>
+        <option value="age_group" {% if selected_category == "age_group" %}selected{% endif %}>Age Group</option>
+        <option value="disability" {% if selected_category == "disability" %}selected{% endif %}>Disability Status</option>
+        <option value="violence_type" {% if selected_category == "violence_type" %}selected{% endif %}>Forms of Violence</option>
+        <option value="perpetrator" {% if selected_category == "perpetrator" %}selected{% endif %}>Perpetrators</option>
+        <option value="reporting" {% if selected_category == "reporting" %}selected{% endif %}>Reported Violence Cases</option>
+        <option value="system_effectiveness" {% if selected_category == "system_effectiveness" %}selected{% endif %}>Reporting System Effectiveness</option>
+      </select>
+    </form>
+
+    <canvas id="trendChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script>
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ labels|safe }},
+    datasets: [
+      {
+        label: 'Students',
+        data: {{ student_counts|safe }},
+        backgroundColor: '#3498db'
+      },
+      {
+        label: 'Teachers',
+        data: {{ teacher_counts|safe }},
+        backgroundColor: '#9b59b6'
+      },
+      {
+        label: 'Parents',
+        data: {{ parent_counts|safe }},
+        backgroundColor: '#16a085'
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Violence Reports by ' + '{{ selected_category|title }}'
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'top',
+        formatter: (value) => value
+      }
+    },
+    responsive: true,
+    scales: {
+      x: { title: { display: true, text: '{{ selected_category|title }}' } },
+      y: { beginAtZero: true, title: { display: true, text: 'Number of Reports' } }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-md-3 col-lg-2">
+      <div class="card card-primary h-100">
+        <div class="card-header">
+          <h3 class="card-title">Data Collection Menu</h3>
+        </div>
+        <div class="card-body p-0">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a href="{% url 'data_collection:data_dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}active{% endif %}">📊 Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{% url 'data_collection:upload_excel' %}" class="nav-link {% if 'upload' in request.path %}active{% endif %}">📤 Upload Data</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'data_collection:data_list' %}" class="nav-link {% if 'list' in request.path %}active{% endif %}">📋 Uploaded Data</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'data_collection:data_analysis' %}" class="nav-link {% if 'analysis' in request.path %}active{% endif %}">📈 Analysis</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="col-md-9 col-lg-10">
+      <div class="content-area">
+        {% block data_content %}
+        {% endblock %}
+      </div>
+    </main>
+  </div>
+</div>
+
+<style>
+  body {
+    overflow-x: hidden; /* prevent horizontal scroll */
+  }
+  .container-fluid {
+    max-width: 100%;
+  }
+  table {
+    width: 100%;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+  .card {
+    max-width: 100%;
+  }
+</style>
+{% endblock %}

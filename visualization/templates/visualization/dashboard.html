@@ -1,0 +1,29 @@
+{% extends "visualization/base_visualization.html" %}
+
+{% block visualization_content %}
+<div class="card">
+  <div class="card-header">Dashboard Overview</div>
+  <div class="card-body">
+    <p>Total Students: {{ total_students }}</p>
+    <p>Total Teachers: {{ total_teachers }}</p>
+    <p>Total Parents: {{ total_parents }}</p>
+    <p><strong>Student Reporting Rate:</strong> {{ student_reporting_rate }}%</p>
+    <canvas id="combinedChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('combinedChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ combined_chart.labels|safe }},
+    datasets: [{
+      label: 'Reporting Violence',
+      data: {{ combined_chart.values|safe }},
+      backgroundColor: ['#3498db','#9b59b6','#16a085']
+    }]
+  }
+});
+</script>
+{% endblock %}

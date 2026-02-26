@@ -1,0 +1,120 @@
+{% extends "data_collection/base_data.html" %}
+{% block data_content %}
+<div class="container-fluid mt-4">
+  <h2>Data Dashboard</h2>
+
+  <!-- Summary Cards -->
+  <div class="row">
+    <!-- Students -->
+    <div class="col-md-4">
+      <div class="card bg-info text-white mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Students</strong></h5>
+          <p class="card-text">Total: {{ total_students }}</p>
+          <h6><strong>By Gender</strong></h6>
+          <ul>
+            {% for s in students_by_gender %}
+              <li>{{ s.gender }}: {{ s.count }}</li>
+            {% endfor %}
+          </ul>
+          <h6><strong>By Disability</strong></h6>
+          <ul>
+            {% for s in students_by_disability %}
+              <li>{% if s.disability_status %}With Disability{% else %}No Disability{% endif %}: {{ s.count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teachers -->
+    <div class="col-md-4">
+      <div class="card bg-success text-white mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Teachers</strong></h5>
+          <p class="card-text">Total: {{ total_teachers }}</p>
+          <h6><strong>By Gender</strong></h6>
+          <ul>
+            {% for t in teachers_by_gender %}
+              <li>{{ t.gender }}: {{ t.count }}</li>
+            {% endfor %}
+          </ul>
+          <h6><strong>By Training</strong></h6>
+          <ul>
+            {% for t in teachers_by_training %}
+              <li>{{ t.training_received }}: {{ t.count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parents -->
+    <div class="col-md-4">
+      <div class="card bg-warning text-dark mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Parents</strong></h5>
+          <p class="card-text">Total: {{ total_parents }}</p>
+          <h6><strong>By Gender</strong></h6>
+          <ul>
+            {% for p in parents_by_gender %}
+              <li>{{ p.gender }}: {{ p.count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall by Region -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card bg-primary text-white mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Overall by Region</strong></h5><hr> 
+          <hr> <!-- separator line -->
+          <ul>
+            {% for r in overall_by_region %}
+              <li>{{ r.region }} - Students: {{ r.student_count }}, Teachers: {{ r.teacher_count }}, Parents: {{ r.parent_count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall by District -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card bg-secondary text-white mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Overall by District</strong></h5><hr> 
+          <hr> <!-- separator line -->
+          <ul>
+            {% for d in overall_by_district %}
+              <li>{{ d.district }} - Students: {{ d.student_count }}, Teachers: {{ d.teacher_count }}, Parents: {{ d.parent_count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall by School -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card bg-dark text-white mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><strong>Overall by School</strong></h5><hr>  
+          <hr> <!-- separator line -->
+          <ul>
+            {% for s in overall_by_school %}
+              <li>{{ s.school }} - Students: {{ s.student_count }}, Teachers: {{ s.teacher_count }}, Parents: {{ s.parent_count }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

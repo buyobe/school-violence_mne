@@ -1,0 +1,223 @@
+{% extends "visualization/base_visualization.html" %}
+{% load static %}
+
+{% block visualization_content %}
+<div class="container-fluid mt-4">
+
+  <!-- Cover Page / NGO Branding -->
+  <div class="text-center mb-4">
+    <img src="{% static 'images/fawe_logo.png' %}" alt="NGO Logo" width="120">
+    <h2 class="mt-3">School Violence Monitoring & Evaluation Report</h2>
+    <p>Prepared by: FAWE TANZANIA</p>
+    <p>Date: {{ now|date:"F j, Y" }}</p>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="card mb-4">
+    <div class="card-header">Executive Summary</div>
+    <div class="card-body">
+      <p>{{ executive_summary }}</p>
+    </div>
+  </div>
+
+  <!-- Data Insights (Charts) -->
+  <div class="card mb-4">
+    <div class="card-header">Data Insights</div>
+    <div class="card-body">
+      <canvas id="violenceTypeChart"></canvas>
+      <canvas id="perpetratorChart" class="mt-4"></canvas>
+      <canvas id="reportingEffectivenessChart" class="mt-4"></canvas>
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <div class="card mb-4">
+    <div class="card-header">Recommendations</div>
+    <div class="card-body">
+      <ul>
+        {% for rec in recommendations %}
+          <li>{{ rec }}</li>
+        {% empty %}
+          <li>No specific recommendations generated for this dataset.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Export Options -->
+  <div class="card mb-4">
+    <div class="card-header">Export Report</div>
+    <div class="card-body">
+      <!-- Text-only export -->
+      <a href="{% url 'export_pdf' %}?executive_summary={{ executive_summary }}{% for rec in recommendations %}&recommendations={{ rec }}{% endfor %}" class="btn btn-outline-primary">Export PDF (text only)</a>
+      <!--a href="{% url 'export_word' %}?executive_summary={{ executive_summary }}{% for rec in recommendations %}&recommendations={{ rec }}{% endfor %}" class="btn btn-outline-secondary">Export Word (text only)</a-->
+      <a href="{% url 'export_excel' %}?executive_summary={{ executive_summary }}{% for rec in recommendations %}&recommendations={{ rec }}{% endfor %}" class="btn btn-outline-success">Export Excel (text only)</a>
+
+      <!-- Chart-enhanced export -->
+      <button class="btn btn-primary" onclick="exportReport('pdf')">Export PDF (with charts)</button>
+      <!--button class="btn btn-secondary" onclick="exportReport('word')">Export Word (with charts)</button-->
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Violence Types (Bar Chart)
+new Chart(document.getElementById('violenceTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ violence_labels|safe }},
+    datasets: [{
+      label: 'Number of Cases',
+      data: {{ violence_counts|safe }},
+      backgroundColor: '#e74c3c'
+    }]
+  },
+  options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Types of Violence Reported',
+        font: { size: 18, weight: 'bold' },
+        color: '#2c3e50'
+      },
+      legend: { display: false }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Violence Type',
+          font: { size: 14, weight: 'bold' },
+          color: '#34495e'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Number of Cases',
+          font: { size: 14, weight: 'bold' },
+          color: '#34495e'
+        },
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+// Perpetrators (Pie Chart)
+new Chart(document.getElementById('perpetratorChart'), {
+  type: 'pie',
+  data: {
+    labels: {{ perpetrator_labels|safe }},
+    datasets: [{
+      data: {{ perpetrator_counts|safe }},
+      backgroundColor: ['#3498db','#9b59b6','#16a085','#f39c12']
+    }]
+  },
+  options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Distribution of Perpetrators',
+        font: { size: 18, weight: 'bold' },
+        color: '#2c3e50'
+      },
+      legend: {
+        position: 'bottom',
+        labels: {
+          font: { size: 12 },
+          color: '#2c3e50'
+        }
+      }
+    }
+  }
+});
+
+// Reporting Effectiveness (Doughnut Chart)
+new Chart(document.getElementById('reportingEffectivenessChart'), {
+  type: 'doughnut',
+  data: {
+    labels: {{ reporting_labels|safe }},
+    datasets: [{
+      data: {{ reporting_counts|safe }},
+      backgroundColor: ['#2ecc71','#e74c3c']
+    }]
+  },
+  options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Effectiveness of Reporting Systems',
+        font: { size: 18, weight: 'bold' },
+        color: '#2c3e50'
+      },
+      legend: {
+        position: 'bottom',
+        labels: {
+          font: { size: 12 },
+          color: '#2c3e50'
+        }
+      }
+    }
+  }
+});
+
+// Convert charts to images and send via hidden form
+function getChartImage(chartId) {
+  const chart = document.getElementById(chartId);
+  return chart ? chart.toDataURL("image/png") : null;
+}
+
+function exportReport(format) {
+  const chartImages = {
+    violence_chart: getChartImage("violenceTypeChart"),
+    perpetrator_chart: getChartImage("perpetratorChart"),
+    reporting_chart: getChartImage("reportingEffectivenessChart"),
+  };
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = `/visualization/reports/export/${format}/`;
+  form.style.display = "none";
+
+  // CSRF token
+  const csrfInput = document.createElement("input");
+  csrfInput.type = "hidden";
+  csrfInput.name = "csrfmiddlewaretoken";
+  csrfInput.value = "{{ csrf_token }}";
+  form.appendChild(csrfInput);
+
+  // Add text fields
+  const summaryInput = document.createElement("input");
+  summaryInput.type = "hidden";
+  summaryInput.name = "executive_summary";
+  summaryInput.value = "{{ executive_summary }}";
+  form.appendChild(summaryInput);
+
+  {% for rec in recommendations %}
+    const recInput{{ forloop.counter }} = document.createElement("input");
+    recInput{{ forloop.counter }}.type = "hidden";
+    recInput{{ forloop.counter }}.name = "recommendations";
+    recInput{{ forloop.counter }}.value = "{{ rec }}";
+    form.appendChild(recInput{{ forloop.counter }});
+  {% endfor %}
+
+  // Add chart images
+  for (const [key, value] of Object.entries(chartImages)) {
+    if (value) {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+}
+</script>
+{% endblock %}

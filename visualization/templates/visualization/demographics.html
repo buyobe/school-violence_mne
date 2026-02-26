@@ -1,0 +1,87 @@
+{% extends "visualization/base_visualization.html" %}
+{% block visualization_content %}
+<div class="container-fluid mt-4">
+  <h2>Demographics Analysis</h2>
+
+  <!-- Gender Distribution -->
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h3>Gender Distribution of Reported Cases</h3>
+      <canvas id="genderChart"></canvas>
+    </div>
+
+    <!-- Age Group Distribution -->
+    <div class="col-md-6">
+      <h3>Age Group Distribution</h3>
+      <canvas id="ageGroupChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Disability Status -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Cases Involving Students with Disabilities</h3>
+      <canvas id="disabilityChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Role-Based Cases -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Cases by Role (Students, Teachers, Parents)</h3>
+      <canvas id="roleChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('genderChart'), {
+  type: 'pie',
+  data: {
+    labels: [{% for g in gender_distribution %}"{{ g.gender }}",{% endfor %}],
+    datasets: [{
+      data: [{% for g in gender_distribution %}{{ g.count }},{% endfor %}],
+      backgroundColor: ['#3498db','#e74c3c']
+    }]
+  }
+});
+
+new Chart(document.getElementById('ageGroupChart'), {
+  type: 'bar',
+  data: {
+    labels: [{% for a in age_group_distribution %}"{{ a.age_group }}",{% endfor %}],
+    datasets: [{
+      label: 'Cases',
+      data: [{% for a in age_group_distribution %}{{ a.count }},{% endfor %}],
+      backgroundColor: '#9b59b6'
+    }]
+  }
+});
+
+new Chart(document.getElementById('disabilityChart'), {
+  type: 'bar',
+  data: {
+    labels: [{% for d in disability_distribution %}"{{ d.disability_status }}",{% endfor %}],
+    datasets: [{
+      label: 'Cases',
+      data: [{% for d in disability_distribution %}{{ d.count }},{% endfor %}],
+      backgroundColor: '#2ecc71'
+    }]
+  }
+});
+
+new Chart(document.getElementById('roleChart'), {
+  type: 'bar',
+  data: {
+    labels: [{% for r in role_distribution %}"{{ r.role }}",{% endfor %}],
+    datasets: [{
+      label: 'Cases',
+      data: [{% for r in role_distribution %}{{ r.count }},{% endfor %}],
+      backgroundColor: '#f1c40f'
+    }]
+  }
+});
+</script>
+{% endblock %}

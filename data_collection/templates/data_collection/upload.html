@@ -1,0 +1,58 @@
+{% extends "data_collection/base_data.html" %}
+{% block data_content %}
+<div class="container mt-4">
+  <h2>Upload Excel Data</h2>
+  <p>
+    Please upload an Excel file with sheets named <strong>Students</strong>, <strong>Teachers</strong>, and <strong>Parents</strong>.
+  </p>
+
+  <!--h4>Students Sheet</h4>
+  <ul>
+    <li>ID Number</li>
+    <li>Region, District, School</li>
+    <li>Gender, Age Group</li>
+    <li>Disability Status</li>
+    <li>Knowledge on Violence</li>
+    <li>Experienced VAC</li>
+    <li>Forms of Violence, Perpetrators, Vulnerable Places</li>
+    <li>Reporting Violence</li>
+    <li>Effectiveness Reporting System</li>
+  </ul>
+
+  <h4>Teachers Sheet</h4>
+  <ul>
+    <li>ID Number</li>
+    <li>Region, District, School</li>
+    <li>Gender, Age Group</li>
+    <li>Marital Status, Education Level</li>
+    <li>Forms of Violence, Vulnerable Places</li>
+    <li>Reporting Violence</li>
+    <li>Right to Discipline Child</li>
+    <li>Effective Handling VAC</li>
+    <li>Training Received</li>
+  </ul>
+
+  <h4>Parents Sheet</h4>
+  <ul>
+    <li>ID Number</li>
+    <li>Region, District, School</li>
+    <li>Gender, Age Group</li>
+    <li>Marital Status, Education Level, Employment</li>
+    <li>Forms of Violence, Vulnerable Places</li>
+    <li>Reporting Violence</li>
+    <li>Physical Punishment</li>
+    <li>Believe in Child Punishment</li>
+    <li>Effectiveness Positive Punishment</li>
+    <li>Child Comforting</li>
+    <li>Impose Rules to Child</li>
+    <li>Set Rules with Child</li>
+  </ul-->
+
+  <form method="post" enctype="multipart/form-data" class="mt-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+</div>
+{% endblock %}
+

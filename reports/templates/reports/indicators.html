@@ -1,0 +1,176 @@
+{% extends "reports/base_reports.html" %}
+{% block reports_content %}
+<h2>Indicators Reports</h2>
+<p>Key metrics and indicators for monitoring school violence.</p>
+
+<!-- 1. Overall Reporting Rate -->
+<div class="card mb-4">
+  <div class="card-header">Students Reporting Violence</div>
+  <div class="card-body">
+    <h3>{{ reporting_rate }}%</h3>
+    <p>Percentage of students who reported experiencing violence</p>
+  </div>
+</div>
+
+<!-- 2. Experienced vs Unexperienced -->
+<div class="card mb-4">
+  <div class="card-header">Experience of Violence</div>
+  <div class="card-body">
+    <canvas id="experienceChart"></canvas>
+  </div>
+</div>
+
+<!-- 3. Forms of Violence -->
+<div class="card mb-4">
+  <div class="card-header">Forms of Violence Experienced</div>
+  <div class="card-body">
+    <canvas id="formsChart"></canvas>
+  </div>
+</div>
+
+<!-- 4. Perpetrators -->
+<div class="card mb-4">
+  <div class="card-header">Cases by Perpetrators</div>
+  <div class="card-body">
+    <canvas id="perpetratorChart"></canvas>
+  </div>
+</div>
+
+<!-- 5. Reported vs Unreported -->
+<div class="card mb-4">
+  <div class="card-header">Reported vs Unreported Violence</div>
+  <div class="card-body">
+    <canvas id="reportingChart"></canvas>
+  </div>
+</div>
+
+<!-- 6. Effectiveness -->
+<div class="card mb-4">
+  <div class="card-header">Effectiveness of Reporting System</div>
+  <div class="card-body">
+    <h3>{{ effectiveness_rate }}%</h3>
+    <p>Percentage of reported cases that were resolved</p>
+    <canvas id="effectivenessChart"></canvas>
+  </div>
+</div>
+
+<!-- 7. Outcome Indicators -->
+<div class="card mb-4">
+  <div class="card-header">Outcome Indicators</div>
+  <div class="card-body">
+    <p>Unresolved Cases Rate: {{ unresolved_rate }}%</p>
+    <canvas id="disciplinaryChart"></canvas>
+  </div>
+</div>
+
+<!-- 8. Recurrence Rate -->
+<div class="card mb-4">
+  <div class="card-header">Recurrence Rate</div>
+  <div class="card-body">
+    <h3>{{ recurrence_rate }}%</h3>
+    <p>Percentage of students experiencing repeated violence cases</p>
+    <canvas id="recurrenceChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // 2. Experience Chart
+  new Chart(document.getElementById('experienceChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Yes (Experienced)', 'No (Unexperienced)'],
+      datasets: [{
+        data: [{{ reporting_yes }}, {{ reporting_no }}],
+        backgroundColor: ['rgba(255,99,132,0.6)','rgba(75,192,192,0.6)']
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Experience of Violence (VAC)' } } }
+  });
+
+  // 3. Forms of Violence Chart
+  new Chart(document.getElementById('formsChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: {{ prevalence_labels|safe }},
+      datasets: [{
+        label: 'Percentage of Students',
+        data: {{ prevalence_counts|safe }},
+        backgroundColor: 'rgba(54,162,235,0.6)'
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Forms of Violence Experienced' } } }
+  });
+
+  // 4. Perpetrator Chart
+  new Chart(document.getElementById('perpetratorChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: {{ perpetrator_labels|safe }},
+      datasets: [{
+        data: {{ perpetrator_counts|safe }},
+        backgroundColor: [
+          'rgba(255,99,132,0.6)',
+          'rgba(255,206,86,0.6)',
+          'rgba(75,192,192,0.6)',
+          'rgba(153,102,255,0.6)'
+        ]
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Comparison of Cases by Perpetrators' } } }
+  });
+
+  // 5. Reported vs Unreported Chart
+  new Chart(document.getElementById('reportingChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Yes (Reported)', 'No (Unreported)'],
+      datasets: [{
+        data: [{{ reported_rate }}, {{ unreported_rate }}],
+        backgroundColor: ['rgba(54,162,235,0.6)','rgba(255,99,132,0.6)']
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Reported vs Unreported Violence' } } }
+  });
+
+  // 6. Effectiveness Chart
+  new Chart(document.getElementById('effectivenessChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Effective', 'Not Effective'],
+      datasets: [{
+        data: [{{ effectiveness_rate }}, {{ unresolved_rate }}],
+        backgroundColor: ['rgba(75,192,192,0.6)','rgba(255,99,132,0.6)']
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Effectiveness of Reporting System' } } }
+  });
+
+  // 7. Disciplinary Actions Chart
+  new Chart(document.getElementById('disciplinaryChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: {{ disciplinary_labels|safe }},
+      datasets: [{
+        label: 'Number of Cases',
+        data: {{ disciplinary_counts|safe }},
+        backgroundColor: 'rgba(153,102,255,0.6)'
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Disciplinary Actions Taken' } } }
+  });
+
+  // 8. Recurrence Chart
+  new Chart(document.getElementById('recurrenceChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Yes (Recurrent)', 'No (Non-Recurrent)'],
+      datasets: [{
+        data: [{{ recurrence_rate }}, {{ non_recurrence_rate }}],
+        backgroundColor: ['rgba(255,99,132,0.6)','rgba(75,192,192,0.6)']
+      }]
+    },
+    options: { plugins: { title: { display: true, text: 'Recurrence of Violence Cases' } } }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+  <!-- Settings-specific header -->
+  <div class="card mb-3">
+    <div class="card-body bg-light">
+      <h4 class="card-title">Settings</h4>
+      <p class="card-text text-muted">Manage users, backups, and system preferences.</p>
+    </div>
+  </div>
+
+  <!-- Settings content -->
+  {% block settings_content %}
+  {% endblock %}
+</div>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "reports/base_reports.html" %}
+
+{% block reports_content %}
+<h2>Reports Dashboard</h2>
+<p>Quick overview of school violence monitoring insights.</p>
+
+<!-- ===================== SUMMARY HIGHLIGHTS ===================== -->
+<div class="row mb-4">
+  <div class="col-md-12">
+    <div class="card text-center bg-light">
+      <div class="card-header bg-warning text-white"><strong>Summary Highlights</strong></div>
+      <div class="card-body">
+        {% if summary_highlights.top_region %}
+          <p>Top Region: {{ summary_highlights.top_region.0 }} ({{ summary_highlights.top_region.1 }}) — {{ summary_highlights.top_region.2 }}%</p>
+        {% endif %}
+        {% if summary_highlights.top_district %}
+          <p>Top District: {{ summary_highlights.top_district.0 }} ({{ summary_highlights.top_district.1 }}) — {{ summary_highlights.top_district.2 }}%</p>
+        {% endif %}
+        {% if summary_highlights.top_school %}
+          <p>Top School: {{ summary_highlights.top_school.0 }} ({{ summary_highlights.top_school.1 }}) — {{ summary_highlights.top_school.2 }}%</p>
+        {% endif %}
+        {% if summary_highlights.top_form_of_violence %}
+          <p>Top Form of Violence: {{ summary_highlights.top_form_of_violence.0 }} ({{ summary_highlights.top_form_of_violence.1 }}) — {{ summary_highlights.top_form_of_violence.2 }}%</p>
+        {% endif %}
+        {% if summary_highlights.top_perpetrator %}
+          <p>Top Perpetrator: {{ summary_highlights.top_perpetrator.0 }} ({{ summary_highlights.top_perpetrator.1 }}) — {{ summary_highlights.top_perpetrator.2 }}%</p>
+        {% endif %}
+        {% if summary_highlights.top_vulnerable_place %}
+          <p>Top Vulnerable Place: {{ summary_highlights.top_vulnerable_place.0 }} ({{ summary_highlights.top_vulnerable_place.1 }}) — {{ summary_highlights.top_vulnerable_place.2 }}%</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================== QUICK INSIGHTS ===================== -->
+<div class="row mb-4">
+  <!-- Total Records -->
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-header bg-primary text-white">Total Records</div>
+      <div class="card-body">
+        <p>Students: {{ student_total }} (M: {{ student_male }}, F: {{ student_female }})<br>
+           Teachers: {{ teacher_total }} (M: {{ teacher_male }}, F: {{ teacher_female }})<br>
+           Parents: {{ parent_total }} (M: {{ parent_male }}, F: {{ parent_female }})</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disability Status -->
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-header bg-primary text-white">Disability Status</div>
+      <div class="card-body">
+        <p>Students: Disabled {{ student_disabled }}, Abled {{ student_abled }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Violence Experience -->
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-header bg-primary text-white">Violence Experience</div>
+      <div class="card-body">
+        <p>Total Students Experienced VAC: {{ student_vac_total }}<br>
+           Female Students Experienced VAC: {{ student_vac_female }}<br>
+           Disabled Students Experienced VAC: {{ student_vac_disabled }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REPORTING RATES ===================== -->
+<div class="row mb-4">
+  <div class="col-md-12">
+    <div class="card text-center">
+      <div class="card-header bg-primary text-white">Reporting Rates</div>
+      <div class="card-body">
+        <p>Students Reporting Violence: {{ student_reporting }}</p>
+        <p>Teachers Reporting Violence: {{ teacher_reporting }}</p>
+        <p>Parents Reporting Violence: {{ parent_reporting }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGIONS, DISTRICTS, SCHOOLS ===================== -->
+<div class="row mb-4">
+  <!-- Regions Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Regions Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for region, count, percent in ranked_regions %}
+          <li class="list-group-item">{{ region }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No region data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Districts Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Districts Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for district, count, percent in ranked_districts %}
+          <li class="list-group-item">{{ district }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No district data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Schools Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Schools Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for school, count, percent in ranked_schools %}
+          <li class="list-group-item">{{ school }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No school data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FORMS OF VIOLENCE, PERPETRATORS, VULNERABLE PLACES ===================== -->
+<div class="row mb-4">
+  <!-- Forms of Violence Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Forms of Violence Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for form, count, percent in ranked_forms_of_violence %}
+          <li class="list-group-item">{{ form }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Perpetrators Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Perpetrators Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for perp, count, percent in ranked_perpetrators %}
+          <li class="list-group-item">{{ perp }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Vulnerable Places Ranked -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white">Vulnerable Places Ranked</div>
+      <ul class="list-group list-group-flush">
+        {% for place, count, percent in ranked_vulnerable_places %}
+          <li class="list-group-item">{{ place }} ({{ count }}) — {{ percent }}%</li>
+        {% empty %}
+          <li class="list-group-item">No data available</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "settings/settings_base.html" %}
+
+{% block settings_content %}
+<h3>Restore Database</h3>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="backup_file">Upload Backup File (.json)</label>
+    <input type="file" name="backup_file" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Restore</button>
+</form>
+{% endblock %}

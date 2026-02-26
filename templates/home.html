@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="jumbotron bg-primary text-white">
+    <h1 class="display-4">School Violence Monitoring System</h1>
+    <p class="lead">An integrated platform for data collection, indicators tracking, visualization, and reporting.</p>
+  </div>
+
+  
+
+    <!-- Data Collection -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">📂 Data Collection</h5>
+          <p class="card-text">Upload and manage collected data.</p>
+          <a href="{% url 'data_collection:data_dashboard' %}" class="btn btn-primary">Go to Data Collection</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+    <!-- Indicators -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">📊 Indicators</h5>
+          <p class="card-text">Track and monitor key indicators.</p>
+          <a href="{% url 'indicators_dashboard' %}" class="btn btn-primary">Go to Indicators</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualization -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">📈 Visualization</h5>
+          <p class="card-text">View charts and graphs of data.</p>
+          <a href="/visualization/" class="btn btn-primary">Go to Visualization</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">📝 Reports</h5>
+          <p class="card-text">Generate and export reports.</p>
+          <a href="/reports/" class="btn btn-primary">Go to Reports</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

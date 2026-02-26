@@ -1,0 +1,100 @@
+{% extends "settings/settings_base.html" %}
+{% load static %}
+
+{% block settings_content %}
+<div class="row">
+
+  <!-- Quick Guide -->
+  <div class="col-12 mb-3">
+    <div class="card card-outline card-success">
+      <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-book"></i> Quick System Guide</h5>
+      </div>
+      <div class="card-body">
+        <p>Welcome to the School Violence Monitoring System. This dashboard serves as a quick manual:</p>
+        <ul>
+          <li><strong>Admins:</strong> Manage users, backup/restore data, configure system settings.</li>
+          <li><strong>DataEntry:</strong> Upload Excel data and manage entries.</li>
+          <li><strong>Viewers:</strong> Explore indicators, visualization, and reports.</li>
+        </ul>
+        <p class="mt-2">
+          For a full manual, see the 
+          <a href="{% static 'docs/system_manual.pdf' %}" target="_blank">System Documentation (PDF)</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Management Guide -->
+  <div class="col-md-4">
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-users"></i> User Management</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">Admins can add, edit, delete users and assign roles.</p>
+        <ol>
+          <li>Go to <em>View Users</em> to see all accounts.</li>
+          <li>Click <em>Add User</em> to register a new account.</li>
+          <li>Use <em>Edit</em> to change details or assign roles.</li>
+          <li>Use <em>Delete</em> to remove accounts (with safeguards).</li>
+        </ol>
+        <a href="{% url 'settings:user_list' %}" class="btn btn-primary btn-block">Go to User Management</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Backup Guide -->
+  <div class="col-md-4">
+    <div class="card card-info card-outline">
+      <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-database"></i> Data Backup</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">Keep your system safe by backing up data regularly.</p>
+        <ol>
+          <li>Click <em>Backup Database</em> to download a JSON file.</li>
+          <li>Store backups securely outside the system.</li>
+          <li>Use <em>Restore Database</em> to reload saved data.</li>
+        </ol>
+        <a href="{% url 'settings:backup_database' %}" class="btn btn-info btn-block">Backup Now</a>
+        <a href="{% url 'settings:restore_database' %}" class="btn btn-warning btn-block">Restore Data</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Settings Guide -->
+  <div class="col-md-4">
+    <div class="card card-secondary card-outline">
+      <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-cogs"></i> System Settings</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">Configure preferences and tailor the system to your needs.</p>
+        <ol>
+          <li>Update organization name/logo.</li>
+          <li>Adjust system thresholds or defaults.</li>
+          <li>Save changes to apply immediately.</li>
+        </ol>
+        <a href="{% url 'settings:system_settings' %}" class="btn btn-secondary btn-block">Configure Settings</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Documentation -->
+  <div class="col-12 mt-3">
+    <div class="card card-outline card-dark">
+      <div class="card-header">
+        <h5 class="card-title"><i class="fas fa-question-circle"></i> Help & Documentation</h5>
+      </div>
+      <div class="card-body">
+        <p>Need more details? Access the full system manual:</p>
+        <ul>
+          <li><a href="{% static 'docs/system_manual.pdf' %}" target="_blank">Download Full Manual (PDF)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <!-- Sidebar -->
+    <div class="card">
+      <div class="card-header bg-primary text-white">Visualization</div>
+      <div class="list-group list-group-flush">
+        <a href="{% url 'visualization_dashboard' %}" class="list-group-item {% if request.resolver_match.url_name == 'visualization_dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{% url 'visualization_demographics' %}" class="list-group-item {% if request.resolver_match.url_name == 'visualization_demographics' %}active{% endif %}">Demographics</a>
+        <a href="{% url 'visualization_trends' %}" class="list-group-item {% if request.resolver_match.url_name == 'visualization_trends' %}active{% endif %}">Trends</a>
+        <a href="{% url 'visualization_reports' %}" class="list-group-item {% if request.resolver_match.url_name == 'visualization_reports' %}active{% endif %}">Reports</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    {% block visualization_content %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "reports/base_reports.html" %}
+
+{% block reports_content %}
+<h2>Violence Reports</h2>
+<p>Summaries and lists of students experiencing violence.</p>
+
+<!-- Download Buttons -->
+<div class="mb-3">
+  <a href="{% url 'export_violence_pdf' %}" class="btn btn-danger">
+    <i class="fas fa-file-pdf"></i> Download PDF (with Logo)
+  </a>
+  <a href="{% url 'export_violence_excel' %}" class="btn btn-success">
+    <i class="fas fa-file-excel"></i> Download Excel
+  </a>
+</div>
+
+<!-- 1. Violence by Gender -->
+<div class="card mb-4">
+  <div class="card-header">Students Experienced Violence by Gender</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Gender</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count, percentage in gender_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+          <td>{{ percentage }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 2. Violence by Disability -->
+<div class="card mb-4">
+  <div class="card-header">Students Experienced Violence by Disability Status</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Disability Status</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count, percentage in disability_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+          <td>{{ percentage }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 3. Violence by Age Group -->
+<div class="card mb-4">
+  <div class="card-header">Students Experienced Violence by Age Group</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Age Group</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count, percentage in age_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+          <td>{{ percentage }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 4. Forms of Violence -->
+<div class="card mb-4">
+  <div class="card-header">List of Forms of Violence</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Form of Violence</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count in forms_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 5. Perpetrators -->
+<div class="card mb-4">
+  <div class="card-header">List of Violence Perpetrators</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Perpetrator</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count in perpetrators_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 6. Vulnerable Places -->
+<div class="card mb-4">
+  <div class="card-header">List of Vulnerable Places</div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Place</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label, count in places_data %}
+        <tr>
+          <td>{{ label }}</td>
+          <td>{{ count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

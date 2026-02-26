@@ -1,0 +1,80 @@
+{% extends "data_collection/base_data.html" %}
+{% block data_content %}
+<div class="container-fluid mt-4">
+  <h2>Violence Data Analysis</h2>
+
+  <!-- Key Insights -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Key Insights</h3>
+      <ul>
+        {% if top_region %}
+          <li><strong>{{ top_region.region }}</strong> has the highest reported cases ({{ top_region.count }}).</li>
+        {% endif %}
+        {% if top_district %}
+          <li><strong>{{ top_district.district }}</strong> is the most affected district ({{ top_district.count }} cases).</li>
+        {% endif %}
+        {% if top_school %}
+          <li><strong>{{ top_school.school }}</strong> is the school with the highest reported cases ({{ top_school.count }}).</li>
+        {% endif %}
+        {% if top_violence %}
+          <li>The most reported form of violence overall is <strong>{{ top_violence.forms_of_violence }}</strong> ({{ top_violence.count }} cases).</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- NGO Relevance -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Why This Matters for the NGO</h3>
+      <p>
+        These findings highlight priority areas for intervention. High-case regions and districts should be targeted for awareness campaigns, 
+        while schools with persistent reports may need direct support such as teacher training, counseling services, or stronger reporting mechanisms.
+      </p>
+    </div>
+  </div>
+
+  <!-- Policy Impact -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Policy Impact</h3>
+      <p>
+        The data collected aligns with national frameworks such as the <strong>Law of the Child Act (2009)</strong>, 
+        the <strong>National Plan of Action to End Violence Against Women and Children (2017–2022)</strong>, 
+        and Tanzania’s commitments under the <strong>Sustainable Development Goals (SDG 16.2)</strong> to end abuse, exploitation, trafficking, and all forms of violence against children.
+      </p>
+      <p>
+        By identifying regions and schools with the highest cases, NGOs can provide evidence to government stakeholders and advocate for stronger enforcement of these policies, 
+        improved child protection services, and increased funding for prevention programs.
+      </p>
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Recommendations</h3>
+      <ul>
+        <li>Prioritize interventions in <strong>{{ top_region.region }}</strong> and <strong>{{ top_district.district }}</strong>.</li>
+        <li>Develop targeted programs addressing <strong>{{ top_violence.forms_of_violence }}</strong>, the most common form of violence.</li>
+        <li>Strengthen reporting mechanisms in schools with high case counts.</li>
+        <li>Engage parents and teachers in awareness campaigns to reduce underreporting.</li>
+        <li>Collaborate with local government to enforce child protection policies and align with Tanzania’s National Plan of Action.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Next Steps</h3>
+      <p>
+        For deeper insights, the <strong>Visualization app</strong> can provide interactive charts showing trends over time, 
+        comparisons across regions, and breakdowns by gender or age group. The <strong>Report app</strong> can generate 
+        tailored reports for stakeholders, combining these insights with NGO recommendations and policy references.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

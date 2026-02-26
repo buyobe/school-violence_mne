@@ -1,0 +1,32 @@
+{% extends "settings/settings_base.html" %}
+
+{% block settings_content %}
+<h3>User Management</h3>
+<a href="{% url 'settings:add_user' %}" class="btn btn-primary mb-3">Add User</a>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        <a href="{% url 'settings:edit_user' user.id %}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{% url 'settings:delete_user' user.id %}" class="btn btn-sm btn-danger">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" class="text-center">No users found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

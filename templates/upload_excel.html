@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Upload Excel Data</h2>
+    <form method="post" enctype="multipart/form-data" class="form-inline">
+        {% csrf_token %}
+        <input type="file" name="excel_file" class="form-control mr-3" required>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+{% endblock %}

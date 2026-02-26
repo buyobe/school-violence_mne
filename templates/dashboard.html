@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Filters -->
+    <form method="get" class="form-inline mb-4">
+        <label class="mr-2">Region:</label>
+        <select name="region" class="form-control mr-3" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for r in regions %}
+                <option value="{{ r }}" {% if r == selected_region %}selected{% endif %}>{{ r }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="mr-2">District:</label>
+        <select name="district" class="form-control mr-3" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for d in districts %}
+                <option value="{{ d }}" {% if d == selected_district %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="mr-2">School:</label>
+        <select name="school" class="form-control mr-3" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for s in schools %}
+                <option value="{{ s }}" {% if s == selected_school %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-primary">Filter</button>
+
+        <!-- Export buttons -->
+        <a href="{% url 'export_excel' %}?region={{ selected_region }}&district={{ selected_district }}&school={{ selected_school }}" class="btn btn-success ml-3">
+            <i class="fas fa-file-excel"></i> Export Excel
+        </a>
+        <a href="{% url 'export_pdf' %}?region={{ selected_region }}&district={{ selected_district }}&school={{ selected_school }}" class="btn btn-danger ml-2">
+            <i class="fas fa-file-pdf"></i> Export PDF
+        </a>
+    </form>
+
+    <!-- Summary Cards -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">Students: {{ students_count }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">Teachers: {{ teachers_count }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">Parents: {{ parents_count }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row mt-4">
+        <div class="col-md-6"><canvas id="genderChart"></canvas></div>
+        <div class="col-md-6"><canvas id="reportingChart"></canvas></div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6"><canvas id="teacherEduChart"></canvas></div>
+        <div class="col-md-6"><canvas id="parentMaritalChart"></canvas></div>
+    </div>
+
+    <!-- Indicators -->
+    <h3 class="mt-5">Key Indicators</h3>
+    <ul>
+        <li>Student Violence Reporting Rate: {{ indicators.student_reporting_rate }}%</li>
+        <li>Teacher Violence Reporting Rate: {{ indicators.teacher_reporting_rate }}%</li>
+        <li>Parent Violence Reporting Rate: {{ indicators.parent_reporting_rate }}%</li>
+        <li>Student Gender Balance: Male {{ indicators.student_gender_balance.male }}, Female {{ indicators.student_gender_balance.female }}</li>
+        <li>Common Vulnerable Places: {{ indicators.common_vulnerable_places|join:", " }}</li>
+    </ul>
+
+    <!-- Quarterly Reporting -->
+    <h4 class="mt-4">Quarterly Student Reporting Trends</h4>
+    <canvas id="quarterlyChart"></canvas>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Students by Gender
+    const genderData = {{ gender_data|safe }};
+    if (genderData.values.length > 0) {
+        new Chart(document.getElementById('genderChart'), {
+            type: 'bar',
+            data: { labels: genderData.labels, datasets: [{ label: 'Students', data: genderData.values, backgroundColor: ['blue','pink'] }] }
+        });
+    }
+
+    // Violence Reporting
+    const reportingData = {{ reporting_data|safe }};
+    if (reportingData.values.reduce((a,b)=>a+b,0) > 0) {
+        new Chart(document.getElementById('reportingChart'), {
+            type: 'pie',
+            data: { labels: reportingData.labels, datasets: [{ data: reportingData.values, backgroundColor: ['green','red'] }] }
+        });
+    }
+
+    // Teacher Education Level
+    const teacherEduData = {{ teacher_edu_data|safe }};
+    if (teacherEduData.values.length > 0) {
+        new Chart(document.getElementById('teacherEduChart'), {
+            type: 'bar',
+            data: { labels: teacherEduData.labels, datasets: [{ label: 'Teachers', data: teacherEduData.values, backgroundColor: 'orange' }] }
+        });
+    }
+
+    // Parent Marital Status
+    const parentMaritalData = {{ parent_marital_data|safe }};
+    if (parentMaritalData.values.length > 0) {
+        new Chart(document.getElementById('parentMaritalChart'), {
+            type: 'pie',
+            data: { labels: parentMaritalData.labels, datasets: [{ data: parentMaritalData.values, backgroundColor: ['purple','yellow','gray'] }] }
+        });
+    }
+
+    // Quarterly Reporting Trends
+    const quarterlyData = {{ indicators.quarterly_reporting|safe }};
+    if (quarterlyData.length > 0) {
+        const labels = quarterlyData.map(q => `Q${q.quarter} ${q.year}`);
+        const totals = quarterlyData.map(q => q.total);
+        const reported = quarterlyData.map(q => q.reported);
+
+        new Chart(document.getElementById('quarterlyChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Total Students', data: totals, borderColor: 'blue', fill: false },
+                    { label: 'Reported Violence', data: reported, borderColor: 'red', fill: false }
+                ]
+            }
+        });
+    }
+</script>
+{% endblock %}

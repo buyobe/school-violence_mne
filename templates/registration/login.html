@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - School Violence Monitoring System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background: url("{% static 'images/login_sketch.png' %}") no-repeat center center fixed;
+      background-size: cover;
+    }
+    .login-box {
+      margin-top: 80px;
+    }
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="hold-transition login-page">
+
+<div class="login-box">
+  <div class="card card-outline card-primary shadow">
+    <div class="card-body text-center">
+      <!-- Organization Logo -->
+      <img src="{% static 'images/fawe_logo.png' %}" alt="Organization Logo" class="mb-3" style="height:80px;">
+      <h4 class="mb-4">School Violence Monitoring System</h4>
+
+      <!-- Login Form -->
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group text-left">
+          {{ form.username.label_tag }}
+          {{ form.username }}
+        </div>
+        <div class="form-group text-left">
+          {{ form.password.label_tag }}
+          {{ form.password }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>
+
+      <hr>
+      <p class="text-muted mt-2">Please enter your credentials to continue.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  @FAWE-TANZANIA
+</footer>
+
+</body>
+</html>
