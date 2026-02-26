@@ -4,15 +4,25 @@ Django==4.2.7
 # Static files handling
 whitenoise==6.6.0
 
-# WSGI server (optional, good practice for deployment)
+# WSGI server (good practice for deployment)
 gunicorn==21.2.0
 
 # Django dependencies
 sqlparse==0.4.4
 asgiref==3.7.2
 
-# Environment variable loader (optional, if you use .env files)
+# Environment variable loader (if you use .env files)
 django-environ==0.11.2
+
+# Third-party Django apps
+django-import-export==3.3.1
+django-crispy-forms==2.1
+crispy-bootstrap5==0.7
+djangorestframework==3.15.1
+django-filter==24.2
+django-extensions==3.2.3
+django-tables2==2.7.0          # if you use tables/grids
+django-widget-tweaks==1.5.0    # if you customize form rendering
 
 # Data analysis and Excel support
 pandas==2.2.1
@@ -27,5 +37,3 @@ numpy==1.26.4
 
 # PDF generation
 reportlab==4.1.0
-
-django-import-export==3.3.1
