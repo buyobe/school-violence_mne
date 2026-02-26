@@ -27,3 +27,5 @@ numpy==1.26.4
 
 # PDF generation
 reportlab==4.1.0
+
+django-import-export==3.3.1
